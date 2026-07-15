@@ -1,12 +1,29 @@
-name: My First GitHub Action
-
+name: Exploar GitHub Runner
 on:
   push:
 
 jobs:
-  hello:
+  exploar-runner:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Message
-        run: echo "Hello DevOps Pathshala"
+      - name: Print Current Directory
+        run: pwd
+
+      - name: Current User
+        run: whoami
+
+      - name: Hostname
+        run: hostname
+
+      - name: Linux Version
+        run: uname -a
+
+      - name: List name
+        run: ls -la
+
+      - name: Disk name
+        run: df -h
+
+      - name: Memory Information
+        run: free -h
