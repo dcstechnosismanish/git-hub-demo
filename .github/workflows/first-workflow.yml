@@ -1,29 +1,17 @@
-name: Exploar GitHub Runner
+name: Check Out Demo
 on:
   push:
 
 jobs:
-  exploar-runner:
+  demo:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Current Directory
-        run: pwd
-
-      - name: Current User
-        run: whoami
-
-      - name: Hostname
-        run: hostname
-
-      - name: Linux Version
-        run: uname -a
-
-      - name: List name
+      - name: Before Checkout
         run: ls -la
 
-      - name: Disk name
-        run: df -h
+      - name: cheeckout repository
+        uses: actions/checkout@v4
 
-      - name: Memory Information
-        run: free -h
+      - name: After Checkout
+        run: ls-la
