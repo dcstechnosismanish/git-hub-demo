@@ -1,17 +1,17 @@
-name: Check Out Demo
+name: My work Fllow
 on:
   push:
 
 jobs:
-  demo:
-    runs-on: ubuntu-latest
+  first-jobs:
+    runs-on: Ubuntu-latest
 
     steps:
-      - name: Before Checkout
+      - name: step 1
+        run: echo "my name is manish"
+
+      - name: step 2
         run: ls -la
 
-      - name: cheeckout repository
-        uses: actions/checkout@v4
-
-      - name: After Checkout
-        run: ls -la
+      - name: step 3
+        run: echo "my friend ..."
