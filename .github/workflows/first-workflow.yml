@@ -1,17 +1,105 @@
-name: My work Fllow
+name: DeOps Demo CI pipeline
+
 on:
   push:
+    branches:
+      - main
 
 jobs:
-  first-jobs:
-    runs-on: Ubuntu-latest
+  lint:
+    runs-on: ubuntu:latest
 
     steps:
-      - name: step 1
-        run: echo "my name is manish"
+      - name: Check Repository
+        uses: actions/checkout@v4
 
-      - name: step 2
-        run: ls -la
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-      - name: step 3
-        run: echo "my friend ..."
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Check Node Version
+        run: node -v
+
+      - name: Check NPM version
+        run: npm -v
+
+      - name: Verify Express Installation
+        run: npm list express
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.je
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Show install packages
+        run: npm list
+
+      - name: Read Secret
+        env:
+          OWNER: ${{ secrets.APP_OWNER }}
+        run: |
+          echo "repository Owner: $OWNER "
+
+      - name: Create Build folder
+        run: |
+          mkdir output
+          echo "Devops Demo App Build Successful" > output/build.txt
+
+      - name: Show Build Folder
+        run: ls -R output
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: devos-build
+          path: output/
+
+  download-artifact:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: devops-build
+
+      - name: show Downloaded files
+        run: ls -R
+
+      - name: Read Artifact File
+        run: cat build.txt
